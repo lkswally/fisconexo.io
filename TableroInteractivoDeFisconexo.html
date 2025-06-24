@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablero Estratégico - Fisconexo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals with Subtle Blue/Green Accents -->
+    <!-- Application Structure Plan: A dashboard-style SPA divided into thematic sections. 1) 'Tablero Principal' for at-a-glance KPIs. 2) 'Análisis Interactivo' with a multi-dataset chart and interactive toggles to tell the story of acquisition vs. retention. 3) A new 'Nuestros Planes' section to clearly state the value proposition and pricing. 4) An expanded 'Nuestro Foco' section to detail the buyer personas. 5) 'Nuestro Proceso' to show the customer journey. This revised structure adds commercial context (pricing) and deepens the user understanding (personas) while maintaining the data-driven core. -->
+    <!-- Visualization & Content Choices: 
+        - KPIs (Section 1): Goal: Inform. Method: Styled HTML stat cards. Justification: Quick overview.
+        - Main Chart (Section 2): Goal: Compare trends. Method: Chart.js combo chart. Interaction: JS toggles for datasets and dynamic analysis text. Justification: Visualizes the core business story. Library: Chart.js.
+        - Pricing Section (Section 3): Goal: Persuade & Inform. Method: Styled HTML cards with clear price points and value comparison. Justification: Directly addresses a key user question and frames the value proposition against alternatives.
+        - Personas (Section 4): Goal: Organize qualitative insights. Method: Two-column HTML layout with detailed descriptions. Justification: Clarifies the strategic focus for the entire team.
+        - Customer Journey (Section 5): Goal: Organize a process. Method: HTML/Tailwind timeline. Justification: Provides context for the sales and onboarding funnel.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 450px;
+            }
+        }
+        .nav-button {
+            transition: all 0.3s ease;
+        }
+        .nav-button.active {
+            background-color: #0ea5e9; /* sky-500 */
+            color: white;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .stat-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+        }
+        .plan-card {
+             background: white;
+             border-radius: 0.75rem;
+             padding: 2rem;
+             box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+             border: 1px solid #e2e8f0;
+             display: flex;
+             flex-direction: column;
+        }
+        .plan-card.featured {
+            border-color: #0ea5e9;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <header class="bg-white shadow-sm sticky top-0 z-20">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <h1 class="text-3xl font-bold tracking-tight text-slate-900">El ADN de Fisconexo</h1>
+            <p class="mt-1 text-slate-500">Más que un reporte: nuestra estrategia, nuestro cliente y nuestra propuesta de valor.</p>
+        </div>
+    </header>
+
+    <main class="py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <section id="dashboard">
+                <h2 class="text-2xl font-semibold text-slate-900 mb-4">Los Números Clave (Mayo '25)</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="stat-card">
+                        <p class="text-sm font-medium text-slate-500">Factu
+                            ración del Mes</p>
+                        <p class="mt-1 text-3xl font-semibold text-sky-600">$215.000</p>
+                    </div>
+                    <div class="stat-card">
+                        <p class="text-sm font-medium text-slate-500">Clientes Nuevos</p>
+                        <p class="mt-1 text-3xl font-semibold text-red-500">1</p>
+                    </div>
+                     <div class="stat-card">
+                        <p class="text-sm font-medium text-slate-500">Leads Conseguidos</p>
+                        <p class="mt-1 text-3xl font-semibold text-amber-500">1</p>
+                    </div>
+                    <div class="stat-card">
+                        <p class="text-sm font-medium text-slate-500">Total Clientes Activos</p>
+                        <p class="mt-1 text-3xl font-semibold text-emerald-600">19</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="analysis" class="mt-12">
+                <div class="bg-white p-6 sm:p-8 rounded-xl shadow-lg">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+                        <div>
+                            <h2 class="text-2xl font-semibold text-slate-900">La Historia Detrás de los Números</h2>
+                            <p class="text-slate-500 mt-1">Usa los botones para ver la doble cara de nuestra realidad actual.</p>
+                        </div>
+                        <div class="flex space-x-2 mt-4 sm:mt-0">
+                            <button id="btnAcquisition" class="nav-button active px-4 py-2 text-sm font-medium rounded-lg bg-slate-200 text-slate-700">El Problema: Adquisición</button>
+                            <button id="btnFinancial" class="nav-button px-4 py-2 text-sm font-medium rounded-lg bg-slate-200 text-slate-700">La Oportunidad: Retención</button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+                        <div class="lg:col-span-2">
+                           <div class="chart-container">
+                                <canvas id="mainChart"></canvas>
+                           </div>
+                        </div>
+                        <div class="lg:col-span-1">
+                            <h3 id="analysisTitle" class="font-semibold text-lg text-slate-800">El Problema: La Adquisición está en caída libre.</h3>
+                            <p id="analysisText" class="mt-2 text-slate-600 text-sm leading-relaxed">
+                                Seamos directos: nuestra capacidad para atraer nuevos clientes se está desmoronando. El gráfico muestra cómo los leads y los nuevos clientes cayeron a un mínimo histórico. Estamos fallando en la parte más importante del embudo: generar interés.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="pricing" class="mt-12">
+                <h2 class="text-2xl font-semibold text-slate-900 text-center">Nuestra Propuesta: Paz Mental a un Precio Justo</h2>
+                <p class="text-slate-600 mb-8 max-w-2xl mx-auto text-center">No vendemos horas de contador. Vendemos la tranquilidad de saber que tus impuestos están en orden, para que vos te dediques a lo tuyo.</p>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+                    <div class="plan-card featured">
+                         <h3 class="text-xl font-bold text-sky-600">Plan Fisconexo</h3>
+                         <p class="text-4xl font-extrabold my-4">$5.000 <span class="text-lg font-medium text-slate-500">/mes</span></p>
+                         <p class="text-sm text-slate-500 mb-6">Precio promocional por los primeros 3 meses. Después, el servicio continúa por $25.000 mensuales.</p>
+                         <ul class="space-y-3 text-sm flex-grow">
+                            <li class="flex items-center"><span class="text-emerald-500 mr-2">✔</span> Gestión integral de facturación</li>
+                            <li class="flex items-center"><span class="text-emerald-500 mr-2">✔</span> Informes mensuales claros</li>
+                            <li class="flex items-center"><span class="text-emerald-500 mr-2">✔</span> Asesoramiento proactivo y alertas</li>
+                            <li class="flex items-center"><span class="text-emerald-500 mr-2">✔</span> Atención por un contador especializado</li>
+                            <li class="flex items-center"><span class="text-emerald-500 mr-2">✔</span> Soporte y resolución de dudas</li>
+                         </ul>
+                         <button class="mt-8 w-full bg-sky-500 text-white font-bold py-3 rounded-lg hover:bg-sky-600 transition-colors">Empezar Ahora</button>
+                    </div>
+                    <div class="plan-card bg-slate-50">
+                         <h3 class="text-xl font-bold text-slate-700">La Vía Tradicional</h3>
+                         <p class="text-4xl font-extrabold my-4">$21.600+ <span class="text-lg font-medium text-slate-500">/mes</span></p>
+                         <p class="text-sm text-slate-500 mb-6">Costo MÍNIMO sugerido por el Consejo Profesional solo por el control mensual de un monotributo. Sin contar extras.</p>
+                         <ul class="space-y-3 text-sm text-slate-600 flex-grow">
+                            <li class="flex items-center"><span class="text-red-500 mr-2">✖</span> Costos variables por cada consulta o trámite extra.</li>
+                            <li class="flex items-center"><span class="text-red-500 mr-2">✖</span> Comunicación menos fluida y procesos más lentos.</li>
+                            <li class="flex items-center"><span class="text-red-500 mr-2">✖</span> Menos enfoque en la proactividad y más en la reacción.</li>
+                            <li class="flex items-center"><span class="text-red-500 mr-2">✖</span> Falta de informes visuales y herramientas digitales.</li>
+                            <li class="flex items-center"><span class="text-red-500 mr-2">✖</span> Riesgo de sorpresas en la factura a fin de mes.</li>
+                         </ul>
+                         <div class="mt-8 w-full bg-slate-200 text-slate-600 font-bold py-3 rounded-lg text-center">El Camino Complicado</div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="diagnosis" class="mt-12">
+                 <h2 class="text-2xl font-semibold text-slate-900 mb-4">Nuestro Foco: ¿A quién ayudamos (y a quién deberíamos ayudar)?</h2>
+                 <p class="text-slate-600 mb-6 max-w-3xl">El futuro de Fisconexo depende de hablarle al cliente correcto. Este es el perfil que define nuestro éxito o nuestro estancamiento.</p>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-xl border border-red-200 shadow-sm">
+                        <h3 class="text-lg font-semibold text-red-700 flex items-center">
+                           <span class="text-2xl mr-3">⛈️</span> El Que Se Va ("El Sobreviviente")
+                        </h3>
+                        <p class="text-sm mt-2 text-slate-500">Este es el perfil que, lamentablemente, más atraemos hoy. Es un cliente que nos frena.</p>
+                        <ul class="mt-4 space-y-3 text-sm text-slate-600">
+                            <li><strong>Mentalidad:</strong> Busca un "arreglo" rápido y barato. Ve el servicio como un parche temporal para solucionar un problema fiscal y aprender lo básico.</li>
+                            <li><strong>Comportamiento:</strong> Aprovecha la promo de $5.000, ordena su situación y luego se va para autogestionarse, creyendo que puede manejarlo solo.</li>
+                            <li><strong>Impacto:</strong> Nos genera una altísima tasa de abandono (churn) y un crecimiento impredecible. No valora el servicio a largo plazo.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-emerald-200 shadow-sm">
+                        <h3 class="text-lg font-semibold text-emerald-700 flex items-center">
+                            <span class="text-2xl mr-3">☀️</span> El Que Se Queda ("El Profesional Enfocado")
+                        </h3>
+                        <p class="text-sm mt-2 text-slate-500">Este es nuestro norte, el cliente que nos hará crecer.</p>
+                         <ul class="mt-4 space-y-3 text-sm text-slate-600">
+                            <li><strong>Perfil:</strong> Freelancers de 25 a 50 años con actividad estable: desarrolladores, coachs, diseñadores, consultores, terapeutas, marketers, vendors de contenido, traders, o empleados que además tienen otra actividad.</li>
+                            <li><strong>Mentalidad:</strong> **Valora su tiempo por encima de todo.** Sabe que cada hora que dedica a la ARCA es una hora que no dedica a facturar o a descansar.</li>
+                            <li><strong>Comportamiento:</strong> Busca un aliado a largo plazo. Quiere **delegar con confianza** y olvidarse de la carga impositiva. Se queda después de la promo porque entiende el valor de la tranquilidad.</li>
+                         </ul>
+                    </div>
+                 </div>
+            </section>
+            
+            <section id="journey" class="mt-12">
+                <h2 class="text-2xl font-semibold text-slate-900 mb-2">Nuestro Proceso: De la Complejidad a la Claridad</h2>
+                <p class="text-slate-600 mb-8 max-w-3xl">En 6 pasos, llevamos a un freelancer estresado a un profesional tranquilo y en control.</p>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 text-center">
+                    <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm">
+                        <div class="bg-sky-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg">1</div>
+                        <h4 class="font-semibold mt-3 text-sm">Ofrecimiento</h4>
+                        <p class="text-xs text-slate-500 mt-1">Email con promo y formulario.</p>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm">
+                        <div class="bg-sky-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg">2</div>
+                        <h4 class="font-semibold mt-3 text-sm">Contacto</h4>
+                        <p class="text-xs text-slate-500 mt-1">WhatsApp y agenda de reunión.</p>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm">
+                        <div class="bg-sky-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg">3</div>
+                        <h4 class="font-semibold mt-3 text-sm">Meet</h4>
+                        <p class="text-xs text-slate-500 mt-1">Reunión para generar confianza.</p>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm">
+                        <div class="bg-sky-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg">4</div>
+                        <h4 class="font-semibold mt-3 text-sm">Pago</h4>
+                        <p class="text-xs text-slate-500 mt-1">Link de pago y diagnóstico.</p>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm">
+                        <div class="bg-sky-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg">5</div>
+                        <h4 class="font-semibold mt-3 text-sm">Servicio</h4>
+                        <p class="text-xs text-slate-500 mt-1">Inicio de la gestión contable.</p>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm">
+                        <div class="bg-sky-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg">6</div>
+                        <h4 class="font-semibold mt-3 text-sm">Renovación</h4>
+                        <p class="text-xs text-slate-500 mt-1">Informe y recordatorio de pago.</p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="bg-white mt-16">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-sm text-slate-500">
+            <p>&copy; 2025 Fisconexo. Tablero Estratégico Interactivo.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const reportData = {
+                labels: ['ago-24', 'sep-24', 'oct-24', 'nov-24', 'dic-24', 'ene-25', 'feb-25', 'mar-25', 'abr-25', 'may-25'],
+                leads: [8, 6, 25, 16, 11, 11, 5, 4, 4, 1],
+                newClients: [0, 0, 6, 5, 2, 4, 5, 2, 4, 1],
+                revenue: [null, null, null, null, null, 117200, 117200, 178800, 199200, 215000]
+            };
+            
+            const analysisContent = {
+                acquisition: {
+                    title: 'El Problema: La Adquisición está en caída libre.',
+                    text: 'Seamos directos: nuestra capacidad para atraer nuevos clientes se está desmoronando. El gráfico muestra cómo los leads y los nuevos clientes cayeron a un mínimo histórico. Estamos fallando en la parte más importante del embudo: generar interés.'
+                },
+                financial: {
+                    title: 'La Oportunidad: La Retención funciona.',
+                    text: 'A pesar del desastre en adquisición, los ingresos suben. Esto significa que los clientes que se quedan (nuestro Perfil Ideal) valoran el servicio y lo pagan. La base es sólida. Ahora necesitamos atraer a más gente como ellos.'
+                }
+            };
+
+            const ctx = document.getElementById('mainChart').getContext('2d');
+            let mainChart;
+
+            const createChart = () => {
+                mainChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: reportData.labels,
+                        datasets: [
+                            {
+                                type: 'line',
+                                label: 'Leads',
+                                data: reportData.leads,
+                                borderColor: '#f59e0b', // amber-500
+                                backgroundColor: '#f59e0b',
+                                tension: 0.3,
+                                yAxisID: 'y',
+                                hidden: false
+                            },
+                            {
+                                type: 'bar',
+                                label: 'Nuevos Clientes',
+                                data: reportData.newClients,
+                                backgroundColor: '#ef4444', // red-500
+                                yAxisID: 'y',
+                                hidden: false
+                            },
+                             {
+                                type: 'line',
+                                label: 'Ingresos',
+                                data: reportData.revenue,
+                                borderColor: '#0ea5e9', // sky-500
+                                backgroundColor: '#0ea5e9',
+                                tension: 0.3,
+                                yAxisID: 'y1',
+                                hidden: true
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: {
+                            mode: 'index',
+                            intersect: false,
+                        },
+                        scales: {
+                             x: {
+                                ticks: {
+                                    maxRotation: 0,
+                                    minRotation: 0,
+                                    autoSkip: true,
+                                    maxTicksLimit: 10
+                                }
+                            },
+                            y: {
+                                type: 'linear',
+                                display: true,
+                                position: 'left',
+                                title: {
+                                    display: true,
+                                    text: 'Cantidad (Leads / Clientes)'
+                                },
+                                beginAtZero: true
+                            },
+                            y1: {
+                                type: 'linear',
+                                display: false,
+                                position: 'right',
+                                title: {
+                                    display: true,
+                                    text: 'Ingresos ($ ARS)'
+                                },
+                                grid: {
+                                    drawOnChartArea: false, 
+                                },
+                                beginAtZero: true
+                            }
+                        },
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            if (context.dataset.yAxisID === 'y1') {
+                                                label += new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(context.parsed.y);
+                                            } else {
+                                                label += context.parsed.y;
+                                            }
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            };
+            
+            createChart();
+
+            const btnAcquisition = document.getElementById('btnAcquisition');
+            const btnFinancial = document.getElementById('btnFinancial');
+            const analysisTitle = document.getElementById('analysisTitle');
+            const analysisText = document.getElementById('analysisText');
+
+            const updateView = (view) => {
+                if (view === 'acquisition') {
+                    mainChart.data.datasets[0].hidden = false; // Leads
+                    mainChart.data.datasets[1].hidden = false; // New Clients
+                    mainChart.data.datasets[2].hidden = true;  // Revenue
+                    mainChart.options.scales.y.display = true;
+                    mainChart.options.scales.y1.display = false;
+                    
+                    analysisTitle.textContent = analysisContent.acquisition.title;
+                    analysisText.textContent = analysisContent.acquisition.text;
+                    
+                    btnAcquisition.classList.add('active');
+                    btnFinancial.classList.remove('active');
+                } else if (view === 'financial') {
+                    mainChart.data.datasets[0].hidden = true;
+                    mainChart.data.datasets[1].hidden = false; // Keep clients for context
+                    mainChart.data.datasets[2].hidden = false;
+                    mainChart.options.scales.y.display = true; // Show both scales
+                    mainChart.options.scales.y1.display = true;
+                    
+                    analysisTitle.textContent = analysisContent.financial.title;
+                    analysisText.textContent = analysisContent.financial.text;
+                    
+                    btnAcquisition.classList.remove('active');
+                    btnFinancial.classList.add('active');
+                }
+                mainChart.update();
+            };
+
+            btnAcquisition.addEventListener('click', () => updateView('acquisition'));
+            btnFinancial.addEventListener('click', () => updateView('financial'));
+        });
+    </script>
+</body>
+</html>
