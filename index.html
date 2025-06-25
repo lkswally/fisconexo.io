@@ -3,26 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tablero Estratégico - Fisconexo</title>
+    <title>Presentación Interna - Fisconexo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Warm Neutrals with Subtle Blue/Green Accents -->
-    <!-- Application Structure Plan: A dashboard-style SPA divided into thematic sections. 1) 'Tablero Principal' for at-a-glance KPIs. 2) 'Análisis Interactivo' with a multi-dataset chart and interactive toggles to tell the story of acquisition vs. retention. 3) A new 'Nuestros Planes' section to clearly state the value proposition and pricing. 4) An expanded 'Nuestro Foco' section to detail the buyer personas. 5) 'Nuestro Proceso' to show the customer journey. This revised structure adds commercial context (pricing) and deepens the user understanding (personas) while maintaining the data-driven core. -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals (Slate) with Sky Blue & Emerald Accents -->
+    <!-- Application Structure Plan: A single-page, scrollable presentation for an internal team. The information architecture follows a narrative flow: 1. Mission (The Why), 2. Target Audience (The Who), 3. Value Prop (The What), 4. Performance Data (The Reality), 5. Process (The How), and 6. Call to Action (The Now). This structure is designed to educate, align, and motivate the team, blending marketing concepts with hard data. -->
     <!-- Visualization & Content Choices: 
-        - KPIs (Section 1): Goal: Inform. Method: Styled HTML stat cards. Justification: Quick overview.
-        - Main Chart (Section 2): Goal: Compare trends. Method: Chart.js combo chart. Interaction: JS toggles for datasets and dynamic analysis text. Justification: Visualizes the core business story. Library: Chart.js.
-        - Pricing Section (Section 3): Goal: Persuade & Inform. Method: Styled HTML cards with clear price points and value comparison. Justification: Directly addresses a key user question and frames the value proposition against alternatives.
-        - Personas (Section 4): Goal: Organize qualitative insights. Method: Two-column HTML layout with detailed descriptions. Justification: Clarifies the strategic focus for the entire team.
-        - Customer Journey (Section 5): Goal: Organize a process. Method: HTML/Tailwind timeline. Justification: Provides context for the sales and onboarding funnel.
+        - Hero/Mission: Full-width section with placeholder for a hero image from fisconexo.com. Goal: Inspire.
+        - Personas: Two-column layout comparing ideal vs. non-ideal customers. Goal: Align strategy.
+        - Advantages: Icon-based grid. Goal: Arm team with sales points.
+        - Data Dashboard: KPIs cards + the interactive Chart.js combo chart with toggles. Goal: Transparently show performance. Interaction: JS toggles for Acquisition vs. Retention views.
+        - Process Timeline: 6-step visual timeline. Goal: Build confidence in our execution.
+        - Call to Action: Clear, bulleted list. Goal: Mobilize the team.
+        - Links: Embedded links to fisconexo.com for reference.
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f8fafc; /* slate-50 */
+            color: #1e293b; /* slate-800 */
         }
         .chart-container {
             position: relative;
@@ -45,51 +51,119 @@
             color: white;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
         }
-        .stat-card {
-            background-color: white;
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        .section-title {
+            font-size: 2.25rem; /* text-4xl */
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            color: #0f172a; /* slate-900 */
+            text-align: center;
         }
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
-        }
-        .plan-card {
-             background: white;
-             border-radius: 0.75rem;
-             padding: 2rem;
-             box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
-             border: 1px solid #e2e8f0;
-             display: flex;
-             flex-direction: column;
-        }
-        .plan-card.featured {
-            border-color: #0ea5e9;
-            transform: scale(1.05);
+        .section-subtitle {
+            font-size: 1.125rem; /* text-lg */
+            color: #475569; /* slate-600 */
+            max-width: 700px;
+            margin: 1rem auto 2.5rem auto;
+            text-align: center;
         }
     </style>
 </head>
-<body class="text-slate-800">
+<body>
 
-    <header class="bg-white shadow-sm sticky top-0 z-20">
-        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-            <h1 class="text-3xl font-bold tracking-tight text-slate-900">El ADN de Fisconexo</h1>
-            <p class="mt-1 text-slate-500">Más que un reporte: nuestra estrategia, nuestro cliente y nuestra propuesta de valor.</p>
-        </div>
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-20">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <a href="#" class="text-xl font-bold text-slate-900">Fisconexo: Presentación Interna</a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#mission" class="text-sm font-medium text-slate-600 hover:text-sky-500 transition-colors">Misión</a>
+                    <a href="#focus" class="text-sm font-medium text-slate-600 hover:text-sky-500 transition-colors">Nuestro Foco</a>
+                    <a href="#data" class="text-sm font-medium text-slate-600 hover:text-sky-500 transition-colors">Datos</a>
+                    <a href="#role" class="text-sm font-medium text-slate-600 hover:text-sky-500 transition-colors">Tu Rol</a>
+                </div>
+            </div>
+        </nav>
     </header>
 
-    <main class="py-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            
-            <section id="dashboard">
-                <h2 class="text-2xl font-semibold text-slate-900 mb-4">Los Números Clave (Mayo '25)</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="stat-card">
-                        <p class="text-sm font-medium text-slate-500">Factu
-                            ración del Mes</p>
-                        <p class="mt-1 text-3xl font-semibold text-sky-600">$215.000</p>
+    <main>
+        <!-- 1. Nuestra Misión -->
+        <section id="mission" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight text-slate-900">
+                        Nuestra Misión: Dar <span class="text-sky-500">Tranquilidad</span>
+                    </h1>
+                    <p class="mt-6 text-lg text-slate-600 max-w-3xl mx-auto">
+                        Existimos para liberar a los profesionales independientes de la carga administrativa y el estrés fiscal. Convertimos la complejidad en la paz mental que necesitan para enfocarse en lo que aman: hacer crecer su negocio.
+                    </p>
+                </div>
+                <!-- Placeholder para imagen de fisconexo.com -->
+                <div class="mt-12 w-full h-96 bg-slate-200 rounded-lg shadow-lg flex items-center justify-center">
+                    <p class="text-slate-500 text-center">
+                        <!-- Imagen de la sección principal de Fisconexo.com -->
+                        [Aquí iría una imagen inspiradora de la web, mostrando a un profesional relajado]
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Nuestro Foco -->
+        <section id="focus" class="py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="section-title">Nuestro Foco: ¿Para Quién Somos?</h2>
+                <p class="section-subtitle">Para ser los mejores, no podemos ser para todos. Nuestro éxito depende de enfocarnos en el cliente correcto y entender por qué el otro no nos sirve.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white p-8 rounded-xl shadow-lg border border-red-200">
+                        <h3 class="text-2xl font-bold text-red-700 flex items-center">
+                           <span class="text-3xl mr-3">⛈️</span> A Quién NO Buscamos
+                        </h3>
+                        <p class="mt-4 font-semibold text-slate-700">"El Sobreviviente"</p>
+                        <p class="mt-2 text-slate-600">Este perfil nos ve como un arreglo temporal. Busca una solución rápida y barata, aprovecha la promo y se va. Nos genera una alta tasa de abandono y no valora el servicio a largo plazo.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg border-2 border-emerald-400">
+                        <h3 class="text-2xl font-bold text-emerald-700 flex items-center">
+                            <span class="text-3xl mr-3">☀️</span> A Quién SÍ Buscamos
+                        </h3>
+                        <p class="mt-4 font-semibold text-slate-700">"El Profesional Enfocado"</p>
+                        <p class="mt-2 text-slate-600">Nuestro cliente ideal. Un freelancer (dev, coach, diseñador, etc.) que **valora su tiempo por encima de todo**. Quiere delegar con confianza para enfocarse 100% en su carrera. Es leal y se convierte en nuestro mejor promotor.</p>
+                    </div>
+                 </div>
+            </div>
+        </section>
+
+        <!-- 3. Nuestras Ventajas -->
+        <section id="advantages" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="section-title">¿Por Qué Fisconexo? Nuestro Valor Agregado</h2>
+                <p class="section-subtitle">Estas son las razones por las que "El Profesional Enfocado" nos elige. Son nuestros pilares y deben estar en cada conversación.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="text-center p-6">
+                        <div class="text-5xl mb-4">❤️</div>
+                        <h3 class="text-xl font-bold mb-2">Atención Personalizada</h3>
+                        <p class="text-slate-600">No somos un robot. Somos un equipo de contadores expertos que entienden tu mundo y te dan respuestas claras.</p>
+                    </div>
+                    <div class="text-center p-6">
+                        <div class="text-5xl mb-4">⏱️</div>
+                        <h3 class="text-xl font-bold mb-2">Ahorro de Tiempo Real</h3>
+                        <p class="text-slate-600">Cada hora que no le dedicas a la AFIP es una hora que usas para facturar más, aprender o descansar. Tu tiempo es tu activo más valioso.</p>
+                    </div>
+                    <div class="text-center p-6">
+                        <div class="text-5xl mb-4">🏷️</div>
+                        <h3 class="text-xl font-bold mb-2">Precio Justo y Transparente</h3>
+                        <p class="text-slate-600">Con nuestra <a href="https://fisconexo.com" target="_blank" class="text-sky-500 font-semibold underline">suscripción</a>, sabes exactamente cuánto pagas. Sin sorpresas ni costos ocultos por cada consulta.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 4. La Realidad en Datos -->
+        <section id="data" class="py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="section-title">La Realidad en Datos (Mayo '25)</h2>
+                <p class="section-subtitle">Para mejorar, primero hay que ser honestos con nuestra situación. Los números muestran una dualidad clara: un problema de adquisición y una fortaleza en retención.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                     <div class="stat-card">
+                        <p class="text-sm font-medium text-slate-500">Facturación del Mes</p>
+                        <p class="mt-1 text-3xl font-semibold text-emerald-600">$215.000</p>
                     </div>
                     <div class="stat-card">
                         <p class="text-sm font-medium text-slate-500">Clientes Nuevos</p>
@@ -101,147 +175,83 @@
                     </div>
                     <div class="stat-card">
                         <p class="text-sm font-medium text-slate-500">Total Clientes Activos</p>
-                        <p class="mt-1 text-3xl font-semibold text-emerald-600">19</p>
+                        <p class="mt-1 text-3xl font-semibold text-sky-600">19</p>
                     </div>
                 </div>
-            </section>
 
-            <section id="analysis" class="mt-12">
                 <div class="bg-white p-6 sm:p-8 rounded-xl shadow-lg">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
                         <div>
-                            <h2 class="text-2xl font-semibold text-slate-900">La Historia Detrás de los Números</h2>
-                            <p class="text-slate-500 mt-1">Usa los botones para ver la doble cara de nuestra realidad actual.</p>
+                            <h3 class="text-2xl font-semibold text-slate-900">Análisis Interactivo de Rendimiento</h3>
+                            <p class="text-slate-500 mt-1">Usa los botones para explorar la historia.</p>
                         </div>
                         <div class="flex space-x-2 mt-4 sm:mt-0">
                             <button id="btnAcquisition" class="nav-button active px-4 py-2 text-sm font-medium rounded-lg bg-slate-200 text-slate-700">El Problema: Adquisición</button>
                             <button id="btnFinancial" class="nav-button px-4 py-2 text-sm font-medium rounded-lg bg-slate-200 text-slate-700">La Oportunidad: Retención</button>
                         </div>
                     </div>
-
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
-                        <div class="lg:col-span-2">
-                           <div class="chart-container">
-                                <canvas id="mainChart"></canvas>
-                           </div>
-                        </div>
-                        <div class="lg:col-span-1">
-                            <h3 id="analysisTitle" class="font-semibold text-lg text-slate-800">El Problema: La Adquisición está en caída libre.</h3>
-                            <p id="analysisText" class="mt-2 text-slate-600 text-sm leading-relaxed">
-                                Seamos directos: nuestra capacidad para atraer nuevos clientes se está desmoronando. El gráfico muestra cómo los leads y los nuevos clientes cayeron a un mínimo histórico. Estamos fallando en la parte más importante del embudo: generar interés.
-                            </p>
-                        </div>
+                    <div class="chart-container">
+                        <canvas id="mainChart"></canvas>
                     </div>
+                    <p id="analysisText" class="mt-4 text-center text-slate-600 text-sm max-w-2xl mx-auto">
+                        Seamos directos: nuestra capacidad para atraer nuevos clientes se está desmoronando. El gráfico muestra cómo los leads y los nuevos clientes cayeron a un mínimo histórico. Estamos fallando en la parte más importante del embudo: generar interés.
+                    </p>
                 </div>
-            </section>
-            
-            <section id="pricing" class="mt-12">
-                <h2 class="text-2xl font-semibold text-slate-900 text-center">Nuestra Propuesta: Paz Mental a un Precio Justo</h2>
-                <p class="text-slate-600 mb-8 max-w-2xl mx-auto text-center">No vendemos horas de contador. Vendemos la tranquilidad de saber que tus impuestos están en orden, para que vos te dediques a lo tuyo.</p>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-                    <div class="plan-card featured">
-                         <h3 class="text-xl font-bold text-sky-600">Plan Fisconexo</h3>
-                         <p class="text-4xl font-extrabold my-4">$5.000 <span class="text-lg font-medium text-slate-500">/mes</span></p>
-                         <p class="text-sm text-slate-500 mb-6">Precio promocional por los primeros 3 meses. Después, el servicio continúa por $25.000 mensuales.</p>
-                         <ul class="space-y-3 text-sm flex-grow">
-                            <li class="flex items-center"><span class="text-emerald-500 mr-2">✔</span> Gestión integral de facturación</li>
-                            <li class="flex items-center"><span class="text-emerald-500 mr-2">✔</span> Informes mensuales claros</li>
-                            <li class="flex items-center"><span class="text-emerald-500 mr-2">✔</span> Asesoramiento proactivo y alertas</li>
-                            <li class="flex items-center"><span class="text-emerald-500 mr-2">✔</span> Atención por un contador especializado</li>
-                            <li class="flex items-center"><span class="text-emerald-500 mr-2">✔</span> Soporte y resolución de dudas</li>
-                         </ul>
-                         <button class="mt-8 w-full bg-sky-500 text-white font-bold py-3 rounded-lg hover:bg-sky-600 transition-colors">Empezar Ahora</button>
-                    </div>
-                    <div class="plan-card bg-slate-50">
-                         <h3 class="text-xl font-bold text-slate-700">La Vía Tradicional</h3>
-                         <p class="text-4xl font-extrabold my-4">$21.600+ <span class="text-lg font-medium text-slate-500">/mes</span></p>
-                         <p class="text-sm text-slate-500 mb-6">Costo MÍNIMO sugerido por el Consejo Profesional solo por el control mensual de un monotributo. Sin contar extras.</p>
-                         <ul class="space-y-3 text-sm text-slate-600 flex-grow">
-                            <li class="flex items-center"><span class="text-red-500 mr-2">✖</span> Costos variables por cada consulta o trámite extra.</li>
-                            <li class="flex items-center"><span class="text-red-500 mr-2">✖</span> Comunicación menos fluida y procesos más lentos.</li>
-                            <li class="flex items-center"><span class="text-red-500 mr-2">✖</span> Menos enfoque en la proactividad y más en la reacción.</li>
-                            <li class="flex items-center"><span class="text-red-500 mr-2">✖</span> Falta de informes visuales y herramientas digitales.</li>
-                            <li class="flex items-center"><span class="text-red-500 mr-2">✖</span> Riesgo de sorpresas en la factura a fin de mes.</li>
-                         </ul>
-                         <div class="mt-8 w-full bg-slate-200 text-slate-600 font-bold py-3 rounded-lg text-center">El Camino Complicado</div>
-                    </div>
-                </div>
-            </section>
+            </div>
+        </section>
 
-            <section id="diagnosis" class="mt-12">
-                 <h2 class="text-2xl font-semibold text-slate-900 mb-4">Nuestro Foco: ¿A quién ayudamos (y a quién deberíamos ayudar)?</h2>
-                 <p class="text-slate-600 mb-6 max-w-3xl">El futuro de Fisconexo depende de hablarle al cliente correcto. Este es el perfil que define nuestro éxito o nuestro estancamiento.</p>
-                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="bg-white p-6 rounded-xl border border-red-200 shadow-sm">
-                        <h3 class="text-lg font-semibold text-red-700 flex items-center">
-                           <span class="text-2xl mr-3">⛈️</span> El Que Se Va ("El Sobreviviente")
-                        </h3>
-                        <p class="text-sm mt-2 text-slate-500">Este es el perfil que, lamentablemente, más atraemos hoy. Es un cliente que nos frena.</p>
-                        <ul class="mt-4 space-y-3 text-sm text-slate-600">
-                            <li><strong>Mentalidad:</strong> Busca un "arreglo" rápido y barato. Ve el servicio como un parche temporal para solucionar un problema fiscal y aprender lo básico.</li>
-                            <li><strong>Comportamiento:</strong> Aprovecha la promo de $5.000, ordena su situación y luego se va para autogestionarse, creyendo que puede manejarlo solo.</li>
-                            <li><strong>Impacto:</strong> Nos genera una altísima tasa de abandono (churn) y un crecimiento impredecible. No valora el servicio a largo plazo.</li>
-                        </ul>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl border border-emerald-200 shadow-sm">
-                        <h3 class="text-lg font-semibold text-emerald-700 flex items-center">
-                            <span class="text-2xl mr-3">☀️</span> El Que Se Queda ("El Profesional Enfocado")
-                        </h3>
-                        <p class="text-sm mt-2 text-slate-500">Este es nuestro norte, el cliente que nos hará crecer.</p>
-                         <ul class="mt-4 space-y-3 text-sm text-slate-600">
-                            <li><strong>Perfil:</strong> Freelancers de 25 a 50 años con actividad estable: desarrolladores, coachs, diseñadores, consultores, terapeutas, marketers, vendors de contenido, traders, o empleados que además tienen otra actividad.</li>
-                            <li><strong>Mentalidad:</strong> **Valora su tiempo por encima de todo.** Sabe que cada hora que dedica a la ARCA es una hora que no dedica a facturar o a descansar.</li>
-                            <li><strong>Comportamiento:</strong> Busca un aliado a largo plazo. Quiere **delegar con confianza** y olvidarse de la carga impositiva. Se queda después de la promo porque entiende el valor de la tranquilidad.</li>
-                         </ul>
-                    </div>
-                 </div>
-            </section>
-            
-            <section id="journey" class="mt-12">
-                <h2 class="text-2xl font-semibold text-slate-900 mb-2">Nuestro Proceso: De la Complejidad a la Claridad</h2>
-                <p class="text-slate-600 mb-8 max-w-3xl">En 6 pasos, llevamos a un freelancer estresado a un profesional tranquilo y en control.</p>
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 text-center">
-                    <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm">
-                        <div class="bg-sky-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg">1</div>
-                        <h4 class="font-semibold mt-3 text-sm">Ofrecimiento</h4>
-                        <p class="text-xs text-slate-500 mt-1">Email con promo y formulario.</p>
-                    </div>
-                    <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm">
-                        <div class="bg-sky-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg">2</div>
-                        <h4 class="font-semibold mt-3 text-sm">Contacto</h4>
-                        <p class="text-xs text-slate-500 mt-1">WhatsApp y agenda de reunión.</p>
-                    </div>
-                    <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm">
-                        <div class="bg-sky-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg">3</div>
-                        <h4 class="font-semibold mt-3 text-sm">Meet</h4>
-                        <p class="text-xs text-slate-500 mt-1">Reunión para generar confianza.</p>
-                    </div>
-                    <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm">
-                        <div class="bg-sky-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg">4</div>
-                        <h4 class="font-semibold mt-3 text-sm">Pago</h4>
-                        <p class="text-xs text-slate-500 mt-1">Link de pago y diagnóstico.</p>
-                    </div>
-                    <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm">
-                        <div class="bg-sky-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg">5</div>
-                        <h4 class="font-semibold mt-3 text-sm">Servicio</h4>
-                        <p class="text-xs text-slate-500 mt-1">Inicio de la gestión contable.</p>
-                    </div>
-                    <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm">
-                        <div class="bg-sky-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg">6</div>
-                        <h4 class="font-semibold mt-3 text-sm">Renovación</h4>
-                        <p class="text-xs text-slate-500 mt-1">Informe y recordatorio de pago.</p>
-                    </div>
+        <!-- 5. Nuestro Proceso -->
+        <section id="process" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="section-title">Nuestro Proceso: De la Complejidad a la Claridad</h2>
+                <p class="section-subtitle">Este es nuestro flujo de 6 pasos, probado y perfeccionado para generar confianza y demostrar valor desde el primer minuto. Cada paso es una oportunidad para brillar.</p>
+                <!-- Placeholder para imagen del proceso -->
+                <div class="w-full h-48 bg-slate-200 rounded-lg shadow-lg flex items-center justify-center">
+                    <p class="text-slate-500 text-center">
+                        <!-- Imagen del flujo de 6 pasos -->
+                        [Aquí iría una imagen o diagrama del proceso de 6 pasos, como el que está en los archivos]
+                    </p>
                 </div>
-            </section>
+            </div>
+        </section>
 
-        </div>
+        <!-- 6. Tu Rol -->
+        <section id="role" class="py-20">
+            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="section-title">Tu Rol: Conviértete en un Misionero de Fisconexo</h2>
+                <p class="section-subtitle">El crecimiento de Fisconexo no depende solo de marketing. Empieza con cada uno de nosotros. Así puedes ayudar:</p>
+                <div class="text-left bg-white p-8 rounded-xl shadow-lg border">
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <span class="text-sky-500 font-bold text-2xl mr-4">1.</span>
+                            <div>
+                                <h4 class="font-bold">Internaliza y Comunica el Valor Real</h4>
+                                <p class="text-slate-600">No vendemos "gestión de impuestos". Vendemos **tranquilidad, tiempo y seguridad**. Usa esas palabras. Son nuestro diferencial.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-sky-500 font-bold text-2xl mr-4">2.</span>
+                            <div>
+                                <h4 class="font-bold">Identifica al Cliente Ideal</h4>
+                                <p class="text-slate-600">Piensa en tus conocidos. ¿Tienes un amigo programador, diseñador o consultor que siempre se queja de ARCA o no sabe qué hacer? ¡Cuéntale de nosotros! Eres nuestra fuente más confiable.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                           <span class="text-sky-500 font-bold text-2xl mr-4">3.</span>
+                            <div>
+                                <h4 class="font-bold">Amplifica Nuestro Mensaje</h4>
+                                <p class="text-slate-600">Pronto lanzaremos un blog, una página de LinkedIn y activaremos X (exTwitter). Sé el primero en darle "Me Gusta", comentar y compartir nuestro contenido. Tu apoyo nos da credibilidad.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <a href="https://fisconexo.com" target="_blank" class="mt-8 inline-block bg-emerald-500 text-white font-bold py-3 px-8 rounded-lg hover:bg-emerald-600 transition-colors">
+                    Visitar Fisconexo.com
+                </a>
+            </div>
+        </section>
+
     </main>
-
-    <footer class="bg-white mt-16">
-        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-sm text-slate-500">
-            <p>&copy; 2025 Fisconexo. Tablero Estratégico Interactivo.</p>
-        </div>
-    </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -253,14 +263,8 @@
             };
             
             const analysisContent = {
-                acquisition: {
-                    title: 'El Problema: La Adquisición está en caída libre.',
-                    text: 'Seamos directos: nuestra capacidad para atraer nuevos clientes se está desmoronando. El gráfico muestra cómo los leads y los nuevos clientes cayeron a un mínimo histórico. Estamos fallando en la parte más importante del embudo: generar interés.'
-                },
-                financial: {
-                    title: 'La Oportunidad: La Retención funciona.',
-                    text: 'A pesar del desastre en adquisición, los ingresos suben. Esto significa que los clientes que se quedan (nuestro Perfil Ideal) valoran el servicio y lo pagan. La base es sólida. Ahora necesitamos atraer a más gente como ellos.'
-                }
+                acquisition: 'Seamos directos: nuestra capacidad para atraer nuevos clientes se está desmoronando. El gráfico muestra cómo los leads y los nuevos clientes cayeron a un mínimo histórico. Estamos fallando en la parte más importante del embudo: generar interés.',
+                financial: 'A pesar del desastre en adquisición, los ingresos suben. Esto significa que los clientes que se quedan (nuestro Perfil Ideal) valoran el servicio y lo pagan. La base es sólida. Ahora necesitamos atraer a más gente como ellos.'
             };
 
             const ctx = document.getElementById('mainChart').getContext('2d');
@@ -277,10 +281,8 @@
                                 label: 'Leads',
                                 data: reportData.leads,
                                 borderColor: '#f59e0b', // amber-500
-                                backgroundColor: '#f59e0b',
                                 tension: 0.3,
                                 yAxisID: 'y',
-                                hidden: false
                             },
                             {
                                 type: 'bar',
@@ -288,57 +290,33 @@
                                 data: reportData.newClients,
                                 backgroundColor: '#ef4444', // red-500
                                 yAxisID: 'y',
-                                hidden: false
                             },
                              {
                                 type: 'line',
                                 label: 'Ingresos',
                                 data: reportData.revenue,
                                 borderColor: '#0ea5e9', // sky-500
-                                backgroundColor: '#0ea5e9',
                                 tension: 0.3,
                                 yAxisID: 'y1',
-                                hidden: true
+                                hidden: true,
                             }
                         ]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        interaction: {
-                            mode: 'index',
-                            intersect: false,
-                        },
+                        interaction: { mode: 'index', intersect: false },
                         scales: {
-                             x: {
-                                ticks: {
-                                    maxRotation: 0,
-                                    minRotation: 0,
-                                    autoSkip: true,
-                                    maxTicksLimit: 10
-                                }
-                            },
+                             x: { grid: { display: false } },
                             y: {
-                                type: 'linear',
-                                display: true,
-                                position: 'left',
-                                title: {
-                                    display: true,
-                                    text: 'Cantidad (Leads / Clientes)'
-                                },
+                                type: 'linear', display: true, position: 'left',
+                                title: { display: true, text: 'Cantidad (Leads / Clientes)' },
                                 beginAtZero: true
                             },
                             y1: {
-                                type: 'linear',
-                                display: false,
-                                position: 'right',
-                                title: {
-                                    display: true,
-                                    text: 'Ingresos ($ ARS)'
-                                },
-                                grid: {
-                                    drawOnChartArea: false, 
-                                },
+                                type: 'linear', display: false, position: 'right',
+                                title: { display: true, text: 'Ingresos ($ ARS)' },
+                                grid: { drawOnChartArea: false },
                                 beginAtZero: true
                             }
                         },
@@ -347,9 +325,7 @@
                                 callbacks: {
                                     label: function(context) {
                                         let label = context.dataset.label || '';
-                                        if (label) {
-                                            label += ': ';
-                                        }
+                                        if (label) { label += ': '; }
                                         if (context.parsed.y !== null) {
                                             if (context.dataset.yAxisID === 'y1') {
                                                 label += new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(context.parsed.y);
@@ -370,35 +346,21 @@
 
             const btnAcquisition = document.getElementById('btnAcquisition');
             const btnFinancial = document.getElementById('btnFinancial');
-            const analysisTitle = document.getElementById('analysisTitle');
             const analysisText = document.getElementById('analysisText');
 
             const updateView = (view) => {
-                if (view === 'acquisition') {
-                    mainChart.data.datasets[0].hidden = false; // Leads
-                    mainChart.data.datasets[1].hidden = false; // New Clients
-                    mainChart.data.datasets[2].hidden = true;  // Revenue
-                    mainChart.options.scales.y.display = true;
-                    mainChart.options.scales.y1.display = false;
-                    
-                    analysisTitle.textContent = analysisContent.acquisition.title;
-                    analysisText.textContent = analysisContent.acquisition.text;
-                    
-                    btnAcquisition.classList.add('active');
-                    btnFinancial.classList.remove('active');
-                } else if (view === 'financial') {
-                    mainChart.data.datasets[0].hidden = true;
-                    mainChart.data.datasets[1].hidden = false; // Keep clients for context
-                    mainChart.data.datasets[2].hidden = false;
-                    mainChart.options.scales.y.display = true; // Show both scales
-                    mainChart.options.scales.y1.display = true;
-                    
-                    analysisTitle.textContent = analysisContent.financial.title;
-                    analysisText.textContent = analysisContent.financial.text;
-                    
-                    btnAcquisition.classList.remove('active');
-                    btnFinancial.classList.add('active');
-                }
+                const isAcquisition = view === 'acquisition';
+                mainChart.data.datasets[0].hidden = !isAcquisition; // Leads
+                mainChart.data.datasets[1].hidden = false; // New Clients (always visible)
+                mainChart.data.datasets[2].hidden = isAcquisition;  // Revenue
+                mainChart.options.scales.y.display = true;
+                mainChart.options.scales.y1.display = !isAcquisition;
+                
+                analysisText.textContent = isAcquisition ? analysisContent.acquisition : analysisContent.financial;
+                
+                btnAcquisition.classList.toggle('active', isAcquisition);
+                btnFinancial.classList.toggle('active', !isAcquisition);
+                
                 mainChart.update();
             };
 
